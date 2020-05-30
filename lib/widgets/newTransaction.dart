@@ -35,7 +35,7 @@ class _NewTransactionState extends State<NewTransaction> {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime.now().subtract(Duration(days: 7)),
+            firstDate: DateTime.now().subtract(Duration(days: 6)),
             lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) return;
