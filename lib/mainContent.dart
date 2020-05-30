@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:personal_expenses/models/transaction.dart';
 import 'package:personal_expenses/widgets/newTransaction.dart';
 import 'package:personal_expenses/widgets/transactionsList.dart';
@@ -17,11 +19,7 @@ class _MainContentState extends State<MainContent> {
 
   List<Transaction> get _recentTransactions {
     return transactions.where((tx) {
-      return tx.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7)
-        )
-      );
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
@@ -35,19 +33,18 @@ class _MainContentState extends State<MainContent> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-
+      backgroundColor: Colors.transparent,
       builder: (_) {
         return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
           margin: EdgeInsets.only(top: 40),
-          color: Colors.transparent,          
+          color: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(20),
-                topRight: const Radius.circular(20)
-              )
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(20),
+                    topRight: const Radius.circular(20))),
             child: NewTransaction(
               transaction: addTransaction,
             ),
@@ -65,31 +62,80 @@ class _MainContentState extends State<MainContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Expenses'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => startAddNewTransaction(context),
+    final mediaQuery = MediaQuery.of(context);
+
+    final PreferredSizeWidget appBar = Platform.isAndroid
+        ? AppBar(
+            title: Text('Personal Expenses'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => startAddNewTransaction(context),
+              )
+            ],
           )
-        ],
-      ),
-      body: Container(
-        color: Color.fromRGBO(250, 250, 250, 1),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TransactionsChart(transactions: _recentTransactions),
-            TransactionsList(transactions: transactions, removeTransaction: this.removeTransaction,)
-          ],
+        : CupertinoNavigationBar(
+            middle: Text('Personal Expenses'),
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(
+                    CupertinoIcons.add_circled,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onTap: () => startAddNewTransaction(context),
+                )
+              ],
+            ),
+          );
+
+    final bodyContent = SafeArea(
+      bottom: false,
+      child: SingleChildScrollView(
+              child: Container(
+                color: Color.fromRGBO(250, 250, 250, 1),            
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    height: (mediaQuery.size.height -
+                            appBar.preferredSize.height -
+                            mediaQuery.padding.top) * 0.20,
+                    child: TransactionsChart(transactions: _recentTransactions)),
+                  Container(
+                    height: (mediaQuery.size.height -
+                            appBar.preferredSize.height -
+                            mediaQuery.padding.top) * 0.80,
+                    child: TransactionsList(
+                        transactions: transactions,
+                        removeTransaction: this.removeTransaction,
+                      ),
+                    )
+                  ],
+                ),
+              ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => startAddNewTransaction(context),
-      ),
     );
+
+    if (Platform.isAndroid) {
+      return Scaffold(
+        appBar: appBar,
+        body: bodyContent,
+        floatingActionButton: Platform.isAndroid
+            ? FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () => startAddNewTransaction(context),
+              )
+            : Container(),
+      );
+    } else {
+      return CupertinoPageScaffold(
+        child: bodyContent,
+        navigationBar: appBar,
+      );
+    }
   }
 }

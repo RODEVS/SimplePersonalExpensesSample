@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:personal_expenses/mainContent.dart';
@@ -11,27 +14,30 @@ void main() {
 }
 
 class PersonalExpensesApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Personal Expenses',
-      theme: ThemeData(
-          primarySwatch: Colors.lightGreen,
+
+  final themeData = ThemeData(
+          primarySwatch: Colors.blue,
           accentColor: Colors.lightGreenAccent,
-          canvasColor: Colors.transparent,
           fontFamily: 'Quicksand',
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
-                      title: TextStyle(
+                      headline6: TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 20,
                   ))),
           textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
+              headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 18,
               ),
-              button: TextStyle(color: Colors.white))),
+              button: TextStyle(color: Colors.white)));
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return MaterialApp(
+      title: 'Personal Expenses',
+      theme: themeData,
       home: MyHomePage(),
     );
   }

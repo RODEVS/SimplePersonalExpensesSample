@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/models/transaction.dart';
 import 'package:intl/intl.dart';
@@ -46,61 +48,88 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
+    final titleButton = Platform.isAndroid
+        ? TextField(
             decoration: InputDecoration(
-              labelText: 'Title',
-            ),
+                labelText: 'Title',
+                labelStyle: Theme.of(context).textTheme.headline6),
             controller: titleController,
             onSubmitted: (_) => _confirmTransaction(),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
+          )
+        : CupertinoTextField(
+            placeholder: 'Title',
+            controller: titleController,
+            onSubmitted: (_) => _confirmTransaction(),
+          );
+
+    final amountButton = Platform.isAndroid
+        ? TextField(
             decoration: InputDecoration(
-              labelText: 'Amount',
-            ),
+                labelText: 'Amount',
+                labelStyle: Theme.of(context).textTheme.headline6),
             controller: amountController,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             onSubmitted: (_) => _confirmTransaction(),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  '${DateFormat('MMM/dd/yyyy').format(_choosenDate)}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                FlatButton(
-                  child: Text('Choose Date',
-                      style: TextStyle(color: Theme.of(context).primaryColor)),
-                  onPressed: _showMyDatePicker,
-                )
-              ],
+          )
+        : CupertinoTextField(
+            placeholder: 'Amount',
+            controller: amountController,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            onSubmitted: (_) => _confirmTransaction(),
+          );
+
+    final addTransactionButton = Platform.isAndroid
+        ? RaisedButton(
+            child: Text(
+              'Add Transaction',
             ),
+            color: Theme.of(context).primaryColor,
+            textColor: Theme.of(context).textTheme.button.color,
+            onPressed: () => _confirmTransaction())
+        : CupertinoButton(
+            child: Text('Add Transaction'),
+            color: Theme.of(context).primaryColor,
+            padding: EdgeInsets.only(left: 15, right: 15),
+            onPressed: () => _confirmTransaction());
+
+    final setDateComponent = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: <Widget>[
+          Text(
+            '${DateFormat('MMM/dd/yyyy').format(_choosenDate)}',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          FlatButton(
+            child: Text('Choose Date',
+                style: TextStyle(color: Theme.of(context).primaryColor)),
+            onPressed: _showMyDatePicker,
+          )
+        ],
+      ),
+    );
+
+    return Container(
+      padding: EdgeInsets.all(40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
           SizedBox(
-            height: 20,
+            height: 15,
           ),
-          RaisedButton(
-              child: Text(
-                'Add Transaction',
-              ),
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).textTheme.button.color,
-              onPressed: () => _confirmTransaction()),
+          titleButton,
+          SizedBox(
+            height: 15,
+          ),
+          amountButton,
+          SizedBox(
+            height: 10,
+          ),
+          setDateComponent,
+          SizedBox(
+            height: 10,
+          ),
+          addTransactionButton,
         ],
       ),
     );

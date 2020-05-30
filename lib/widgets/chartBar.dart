@@ -14,9 +14,14 @@ class ChartBar extends StatelessWidget {
               height: 20,
               padding: EdgeInsets.all(2),
               child: FittedBox(
-                  child: Text('\$${this.groupedTransaction['amount']}'))),
+                  child: Text(
+                    '\$${this.groupedTransaction['amount']}', 
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                )
+          ),
           SizedBox(
-            height: 4,
+            height: 10,
           ),
           Container(
             height: 60,
@@ -45,9 +50,11 @@ class ChartBar extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 4,
+            height: 10,
           ),
-          Text(this.groupedTransaction['day'].toString())
+          Text(
+            this.groupedTransaction['day'].toString(), 
+            style: Theme.of(context).textTheme.headline6,)
         ],      
     );
   }

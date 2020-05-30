@@ -9,8 +9,7 @@ class TransactionsList extends StatelessWidget {
   TransactionsList({this.transactions, this.removeTransaction});
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
+    return Container(
         child: (transactions.isEmpty)
             ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +26,7 @@ class TransactionsList extends StatelessWidget {
                   ),
                   Text(
                     'No transactions yet',
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ],
                 
@@ -41,7 +40,6 @@ class TransactionsList extends StatelessWidget {
                 },
                 itemCount: transactions.length,
               ),
-      ),
     );
   }
 }
