@@ -127,6 +127,7 @@ class _MainContentState extends State<MainContent> {
         floatingActionButton: Platform.isAndroid
             ? FloatingActionButton(
                 child: Icon(Icons.add),
+                backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () => startAddNewTransaction(context),
               )
             : Container(),
