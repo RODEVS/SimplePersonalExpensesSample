@@ -15,7 +15,7 @@ class PersonalExpensesApp extends StatelessWidget {
 
   final themeData = ThemeData(
           primarySwatch: Colors.blue,
-          accentColor: Colors.lightGreenAccent,
+          accentColor: Colors.lightBlueAccent,
           fontFamily: 'Quicksand',
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
