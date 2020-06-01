@@ -46,6 +46,34 @@ class _NewTransactionState extends State<NewTransaction> {
     });
   }
 
+  void _myCupertinoDatePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20),
+              topRight: const Radius.circular(20)),
+        ),
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.date,
+          initialDateTime: DateTime.now(),
+          minimumDate: DateTime.now().subtract(Duration(days: 6)),
+          maximumDate: DateTime.now(),
+          onDateTimeChanged: (DateTime newDateTime) {
+            if (newDateTime == null) return;
+
+            setState(() {
+              _choosenDate = newDateTime;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final titleButton = Platform.isAndroid
@@ -101,10 +129,16 @@ class _NewTransactionState extends State<NewTransaction> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           FlatButton(
-            child: Text('Choose Date',
-                style: TextStyle(color: Theme.of(context).primaryColor)),
-            onPressed: _showMyDatePicker,
-          )
+              child: Text('Choose Date',
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
+              onPressed: () {
+                if (Platform.isAndroid) {
+                  _showMyDatePicker();
+                } else {
+                  _myCupertinoDatePicker(context);
+                }
+              }
+            ),
         ],
       ),
     );

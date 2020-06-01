@@ -21,7 +21,7 @@ class ChartBar extends StatelessWidget {
                 )
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Container(
             height: 60,
@@ -50,7 +50,7 @@ class ChartBar extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Text(
             this.groupedTransaction['day'].toString(), 

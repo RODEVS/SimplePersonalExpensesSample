@@ -36,7 +36,7 @@ class _MainContentState extends State<MainContent> {
       backgroundColor: Colors.transparent,
       builder: (_) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
+          height: MediaQuery.of(context).size.height * 0.90,
           margin: EdgeInsets.only(top: 40),
           color: Colors.transparent,
           child: Container(
@@ -103,12 +103,12 @@ class _MainContentState extends State<MainContent> {
                   Container(
                     height: (mediaQuery.size.height -
                             appBar.preferredSize.height -
-                            mediaQuery.padding.top) * 0.20,
+                            mediaQuery.padding.top) * 0.25,
                     child: TransactionsChart(transactions: _recentTransactions)),
                   Container(
                     height: (mediaQuery.size.height -
                             appBar.preferredSize.height -
-                            mediaQuery.padding.top) * 0.80,
+                            mediaQuery.padding.top) * 0.75,
                     child: TransactionsList(
                         transactions: transactions,
                         removeTransaction: this.removeTransaction,
